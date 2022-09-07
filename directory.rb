@@ -20,7 +20,7 @@ def process(selection)
   when "1"
     input_students
   when "2"
-    show_students 
+    print_students_options
   when "3"
     save_students 
   when "4" 
@@ -47,11 +47,44 @@ def input_students
   end
 end 
 
-def show_students
-  print_header 
-  print_students_list
-  print_footer
+def print_students_options
+  puts "Select one of the following print options"
+  puts "1. Print the entire list of names"
+  puts "2. Filter by intial letter of first name"
+  user_print_option = STDIN.gets.chomp
+  case user_print_option
+  when "1"
+    print_header 
+    print_students_list
+    print_footer
+  when "2"
+    filter_by_initial_letter
+  else
+    puts "Something went wrong, please make another selection"
+    print_students_options
+  end 
 end 
+
+def filter_by_initial_letter
+  puts "Type a letter to filter the names by"
+  filter_letter = gets.chomp.capitalize
+  print_header
+  filtered_students = @students.select { |student| student[:name].start_with?(filter_letter)}
+  filtered_students.each.with_index(1) do |student, index|
+    puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"
+  end 
+  puts "Overall, we have #{filtered_students.count} great students"
+end 
+
+
+
+
+
+
+
+
+
+
 # Makes things easier to read by putting them into methods
 def print_header 
     puts "The students of Villains Academy"
