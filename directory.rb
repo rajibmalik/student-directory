@@ -2,7 +2,7 @@
 
 def print_menu
   puts "1. Input the students"
-  puts "2. Show the students"
+  puts "2. Show a list of the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
   puts "9. Exit" # 9 because we'll be adding more items 
@@ -51,6 +51,7 @@ def print_students_options
   puts "Select one of the following print options"
   puts "1. Print the entire list of names"
   puts "2. Filter by intial letter of first name"
+  puts "3. Print names of students less than 12 characters in length"
   user_print_option = STDIN.gets.chomp
   case user_print_option
   when "1"
@@ -59,6 +60,8 @@ def print_students_options
     print_footer
   when "2"
     filter_by_initial_letter
+  when "3"
+    filter_by_character_length
   else
     puts "Something went wrong, please make another selection"
     print_students_options
@@ -76,15 +79,14 @@ def filter_by_initial_letter
   puts "Overall, we have #{filtered_students.count} great students"
 end 
 
-
-
-
-
-
-
-
-
-
+def filter_by_character_length
+  filtered_students = @students.select { |student| student[:name].length < 12}
+  filtered_students.each.with_index(1) do |student, index|
+    puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"
+  end 
+  puts "Overall, we have #{filtered_students.count} great students"
+  
+end 
 # Makes things easier to read by putting them into methods
 def print_header 
     puts "The students of Villains Academy"
