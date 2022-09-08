@@ -33,17 +33,24 @@ def process(selection)
 end
 
 def input_students
-  puts "Please enter the names of the students"
+  puts "Please enter the first name of the student:\n"
   puts "To finish, just hit return twice"
   # Get the first name
-  name = STDIN.gets.chomp
+  first_name = STDIN.gets.chomp.capitalize
   # While the name is not empty, repeat this code
-  while !name.empty? do
+  while !first_name.empty? do
     # Add the student hash to the array
-    @students << {name: name, cohort: :november}
+    puts "\nPlease enter the last name of the new student:\n"
+    last_name = gets.chomp.capitalize
+    @students << {
+      first_name: first_name,
+      last_name: last_name,
+      cohort: :november
+    }
     puts "Now we have #{@students.count} students"
     # Get another name from the user
-    name = STDIN.gets.chomp
+    puts "Please enter the first name of another student:\n"
+    first_name = STDIN.gets.chomp
   end
 end 
 
@@ -72,17 +79,17 @@ def filter_by_initial_letter
   puts "Type a letter to filter the names by"
   filter_letter = gets.chomp.capitalize
   print_header
-  filtered_students = @students.select { |student| student[:name].start_with?(filter_letter)}
+  filtered_students = @students.select { |student| student[:first_name].start_with?(filter_letter)}
   filtered_students.each.with_index(1) do |student, index|
-    puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"
+    puts "#{index}: #{student[:first_name]} #{student[:last_name]} (#{student[:cohort]} cohort)"
   end 
   puts "Overall, we have #{filtered_students.count} great students"
 end 
 
 def filter_by_character_length
-  filtered_students = @students.select { |student| student[:name].length < 12}
+  filtered_students = @students.select { |student| student[:first_name].length < 12}
   filtered_students.each.with_index(1) do |student, index|
-    puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"
+    puts "#{index}: #{student[:first_name]} (#{student[:cohort]} cohort)"
   end 
   puts "Overall, we have #{filtered_students.count} great students"
   
@@ -95,7 +102,7 @@ end
 
 def print_students_list
     @students.each.with_index(1) do |student, index|
-        puts "#{index}: #{student[:name]} (#{student[:cohort]} cohort)"
+        puts "#{index}: #{student[:first_name]} #{student[:last_name]} (#{student[:cohort]} cohort)"
     end
 end 
 
@@ -108,7 +115,7 @@ def save_students
   file = File.open("students.csv", "w")
   # Iterate over the array of students 
   @students.each do |student| 
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:first_name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end 
