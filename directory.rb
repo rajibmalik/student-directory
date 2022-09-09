@@ -113,31 +113,6 @@ def filter_by_cohort
   
 end 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Makes things easier to read by putting them into methods
 def print_header 
     puts "The students of Villains Academy"
@@ -151,7 +126,11 @@ def print_students_list
 end 
 
 def print_footer
+  if @students.count == 1
+    puts "Overall, we have #{@students.count} great student"
+  else 
     puts "Overall, we have #{@students.count} great students"
+  end 
 end 
 
 def save_students
