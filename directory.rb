@@ -120,8 +120,12 @@ def print_header
 end
 
 def print_students_list
+  if @students.count == 0 
+    puts "There are no current students to list"
+  else 
     @students.each.with_index(1) do |student, index|
         puts "#{index}: #{student[:first_name]} #{student[:last_name]} (#{student[:cohort]} cohort)"
+      end 
     end
 end 
 
