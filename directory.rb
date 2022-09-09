@@ -42,10 +42,12 @@ def input_students
     # Add the student hash to the array
     puts "\nPlease enter the last name of the new student:\n"
     last_name = gets.chomp.capitalize
+    puts "\nPlease enter the cohort:"
+    cohort = gets.chomp.capitalize
     @students << {
       first_name: first_name,
       last_name: last_name,
-      cohort: :november
+      cohort: cohort
     }
     puts "Now we have #{@students.count} students"
     # Get another name from the user
@@ -59,6 +61,7 @@ def print_students_options
   puts "1. Print the entire list of names"
   puts "2. Filter by intial letter of first name"
   puts "3. Print names of students less than 12 characters in length"
+  puts "4. Print names of students by cohort "
   user_print_option = STDIN.gets.chomp
   case user_print_option
   when "1"
@@ -69,6 +72,8 @@ def print_students_options
     filter_by_initial_letter
   when "3"
     filter_by_character_length
+  when "4"
+    filter_by_cohort 
   else
     puts "Something went wrong, please make another selection"
     print_students_options
@@ -81,19 +86,58 @@ def filter_by_initial_letter
   print_header
   filtered_students = @students.select { |student| student[:first_name].start_with?(filter_letter)}
   filtered_students.each.with_index(1) do |student, index|
-    puts "#{index}: #{student[:first_name]} #{student[:last_name]} (#{student[:cohort]} cohort)"
+    puts "#{index}: #{student[:first_name]} #{student[:last_name]} #{student[:cohort]} cohort"
   end 
   puts "Overall, we have #{filtered_students.count} great students"
 end 
 
 def filter_by_character_length
+  print_header
   filtered_students = @students.select { |student| student[:first_name].length < 12}
   filtered_students.each.with_index(1) do |student, index|
-    puts "#{index}: #{student[:first_name]} (#{student[:cohort]} cohort)"
+    puts "#{index}: #{student[:first_name]} #{student[:last_name]} #{student[:cohort]} cohort"
   end 
   puts "Overall, we have #{filtered_students.count} great students"
   
 end 
+
+def filter_by_cohort 
+  puts "Type a cohort fo filter the names by"
+  filter_cohort = gets.chomp.capitalize
+  print_header
+  filtered_students = @students.select { |student| student[:cohort].eql?(filter_cohort) } 
+  filtered_students.each.with_index(1) do |student, index|
+    puts "#{index}: #{student[:cohort]} cohort #{student[:first_name]} #{student[:last_name]} "
+  end 
+  puts "Overall, we have #{filtered_students.count} great students"
+  
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Makes things easier to read by putting them into methods
 def print_header 
     puts "The students of Villains Academy"
@@ -115,7 +159,7 @@ def save_students
   file = File.open("students.csv", "w")
   # Iterate over the array of students 
   @students.each do |student| 
-    student_data = [student[:first_name], student[:cohort]]
+    student_data = [student[:first_name], student[:last_name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end 
@@ -125,8 +169,12 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    first_name, last_name, cohort = line.chomp.split(',')
+    @students << {
+      first_name: first_name, 
+      last_name: last_name, 
+      cohort: cohort 
+    }
   end 
   file.close 
 end 
